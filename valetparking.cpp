@@ -38,153 +38,160 @@ ValetParking::~ValetParking()
 size_t ValetParking::TotalStallSpaces()
 // return the maximum number of cars that all stalls can accommodate
 {
-  // TODO: Implement this function, including the return statement.
-  // Before submitting your assignment, delete all TODO comments
-  // including this one.
-  return 0;
+  return _numberofstalls * _stallcapacity;
 }
 
 size_t ValetParking::CarsInStalls()
 // return the number of cars parked in all the stalls
 {
-  // TODO: Implement this function, including the return statement.
-  // Before submitting your assignment, delete all TODO comments
-  // including this one.
-  return 0;
+  size_t totalcars = 0;
+  for(const auto& s : _parkingstall) {
+    totalcars += s.size();
+  }
+  return totalcars;
 }
 
 size_t ValetParking::CarsInCheckOut()
 // return the number of cars waiting in checkout line to pay before exiting the lot.
 {
-  // TODO: Implement this function, including the return statement.
-  // Before submitting your assignment, delete all TODO comments
-  // including this one.
-  return 0;
+  return _checkout->size();
 }
 
 size_t ValetParking::AvailableStallSpaces()
 // return the number of available parking spaces in all the stalls
 {
-  // TODO: Implement this function, including the return statement.
-  // Before submitting your assignment, delete all TODO comments
-  // including this one.
-  return 0;
+  size_t availablespaces = 0;
+  for(const auto& s : _parkingstall){
+    int space = _stallcapacity-s.size();
+    availablespaces += space;
+  }
+  return availablespaces;
 }
 
 double ValetParking::TotalSales()
 // return the total amount based on the number of tickets issued
 {
-  // TODO: Implement this function, including the return statement.
-  // Before submitting your assignment, delete all TODO comments
-  // including this one.
-  return 0.0;
+  return _currentticket * _fee;
 }
 
 size_t ValetParking::Pay()
 // remove and return the ticket# of car at front of the checkout queue, and the fee is collected.
 {
-  // TODO: Implement this function, including the return statement.
-  // Before submitting your assignment, delete all TODO comments
-  // including this one.
-  return 0;
+  if(_checkout->empty()){
+    return 0;
+  }
+  _paid += _fee;
+  size_t ticketNo = _checkout->front();
+  _checkout->pop();
+  return ticketNo;
 }
 
 double ValetParking::TotalPaid()
 // return the total amount customers have paid so far based on the number of cars exited the lot.
 {
-  // TODO: Implement this function, including the return statement.
-  // Before submitting your assignment, delete all TODO comments
-  // including this one.
-  return 0.0;
+  return _paid;
 }
 
 bool ValetParking::ParkingEmpty()
 // return true if all stalls and checkout queue are empty
 {
-  // TODO: Implement this function, including the return statement.
-  // Before submitting your assignment, delete all TODO comments
-  // including this one.
-  return false;
+  if(!(StallEmpty() && QueueEmpty())){
+    return false;
+  }
+  return true;
 }
 
 bool ValetParking::ParkingFull()
 // return true if all stalls and checkout queue are full
 {
-  // TODO: Implement this function, including the return statement.
-  // Before submitting your assignment, delete all TODO comments
-  // including this one.
-  return false;
+  if(!(StallFull() && QueueFull())){
+    return false;
+  }
+  return true;
 }
 
 bool ValetParking::QueueEmpty()
 // return true if the checkout queue is empty
 {
-  // TODO: Implement this function, including the return statement.
-  // Before submitting your assignment, delete all TODO comments
-  // including this one.
-  return false;
+  if(!(_checkout->empty())){
+    return false;
+  }
+  return true;
 }
 
 bool ValetParking::QueueFull()
 // return true if the checkout queue is full
 {
-  // TODO: Implement this function, including the return statement.
-  // Before submitting your assignment, delete all TODO comments
-  // including this one.
-  return false;
+  if(!(_checkout->size() == _queuecapacity)){
+    return false;
+    }
+  return true;
 }
 
 bool ValetParking::StallEmpty()
 // return true if all stalls are empty
 {
-  // TODO: Implement this function, including the return statement.
-  // Before submitting your assignment, delete all TODO comments
-  // including this one.
-  return false;
+  for(const auto& s : _parkingstall){
+    if(!s.empty()){
+      return false;
+    }
+  }
+  return true;
 }
 
 bool ValetParking::StallFull()
 // return true if all stalls are full
 {
-  // TODO: Implement this function, including the return statement.
-  // Before submitting your assignment, delete all TODO comments
-  // including this one.
-  return false;
+  for(const auto& s : _parkingstall){
+    if(s.size() != _stallcapacity){
+      return false;
+    }
+  }
+  return true;
 }
 
 size_t ValetParking::GetNextTicket()
 // return the next ticket number to issue to customer
 {
-  // TODO: Implement this function, including the return statement.
-  // Before submitting your assignment, delete all TODO comments
-  // including this one.
-  return 0;
+  return ++_currentticket;
 }
 
 size_t ValetParking::CheckIn()
 // on success return stall# (index-1 base), on failure return 0.
 {
-  // TODO: Implement this function, including the return statement.
-  // Before submitting your assignment, delete all TODO comments
-  // including this one.
-  return 0;
+ size_t ticketNo = GetNextTicket();
+ for (size_t i = 0; i < _numberofstalls; ++i){
+   if (_parkingstall[i].size() == _stallcapacity){
+     continue;
+   }
+     _parkingstall[i].push(ticketNo);
+     return i + 1;
+ }
+ return 0;
 }
 
-size_t ValetParking::StallNumber( size_t ticket)
+size_t ValetParking::StallNumber(size_t ticket)
 // return the stall number (index-1 base) in which the ticket number resides
 {
-  // TODO: Implement this function, including the return statement.
-  // Before submitting your assignment, delete all TODO comments
-  // including this one.
-  return 0;
+  for (size_t i = 0; i < _numberofstalls; ++i){
+    auto tmp = _parkingstall[i];
+    while (!tmp.empty()){
+        size_t ticketNumber = tmp.top();
+        if (ticketNumber == ticket){
+          return i + 1;
+        }
+          tmp.pop();
+      }
+  }
 }
 
-bool ValetParking::CheckOut( size_t stallnumber, size_t ticket) 
+bool ValetParking::CheckOut( size_t stallnumber, size_t ticket)
 // Retrieve the ticket# from the stall and place the ticket in the checkout queue.
 // On success return true.
 {
-  // TODO: Implement this function, including the return statement.
-  // Before submitting your assignment, delete all TODO comments
-  // including this one.
-  return false;
+  if (!QueueFull()){
+    //_parkingstall[stallnumber-1].
+  _checkout->push(ticket);
+  }
+  return true;
 }
