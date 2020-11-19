@@ -174,15 +174,16 @@ size_t ValetParking::StallNumber(size_t ticket)
 // return the stall number (index-1 base) in which the ticket number resides
 {
   for (size_t i = 0; i < _numberofstalls; ++i){
-    auto tmp = _parkingstall[i];
-    while (!tmp.empty()){
-        size_t ticketNumber = tmp.top();
+    auto sn = _parkingstall[i];
+    while (!sn.empty()){
+        size_t ticketNumber = sn.top();
         if (ticketNumber == ticket){
           return i + 1;
         }
-          tmp.pop();
+          sn.pop();
       }
   }
+  return 0;
 }
 
 bool ValetParking::CheckOut( size_t stallnumber, size_t ticket)
@@ -190,8 +191,9 @@ bool ValetParking::CheckOut( size_t stallnumber, size_t ticket)
 // On success return true.
 {
   if (!QueueFull()){
-    //_parkingstall[stallnumber-1].
+  _parkingstall[stallnumber-1].pop();
   _checkout->push(ticket);
+    return true;
   }
-  return true;
+  return false;
 }
