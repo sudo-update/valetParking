@@ -191,10 +191,6 @@ bool ValetParking::CheckOut( size_t stallnumber, size_t ticket)
 // On success return true.
 {
   if (!QueueFull()){
-<<<<<<< HEAD
-=======
-    //_parkingstall[stallnumber-1].
->>>>>>> 0458febea74ae0ea562ee22d1b2ef9c0c1dac327
   _parkingstall[stallnumber-1].pop();
   _checkout->push(ticket);
     return true;
