@@ -45,7 +45,8 @@ size_t ValetParking::CarsInStalls()
 // return the number of cars parked in all the stalls
 {
   size_t totalcars = 0;
-  for(const auto& s : _parkingstall) {
+  for(const auto& s : _parkingstall)
+  {
     totalcars += s.size();
   }
   return totalcars;
@@ -61,7 +62,8 @@ size_t ValetParking::AvailableStallSpaces()
 // return the number of available parking spaces in all the stalls
 {
   size_t availablespaces = 0;
-  for(const auto& s : _parkingstall){
+  for(const auto& s : _parkingstall)
+  {
     int space = _stallcapacity-s.size();
     availablespaces += space;
   }
@@ -77,7 +79,8 @@ double ValetParking::TotalSales()
 size_t ValetParking::Pay()
 // remove and return the ticket# of car at front of the checkout queue, and the fee is collected.
 {
-  if(_checkout->empty()){
+  if(_checkout->empty())
+  {
     return 0;
   }
   _paid += _fee;
@@ -95,7 +98,8 @@ double ValetParking::TotalPaid()
 bool ValetParking::ParkingEmpty()
 // return true if all stalls and checkout queue are empty
 {
-  if(!(StallEmpty() && QueueEmpty())){
+  if(!(StallEmpty() && QueueEmpty()))
+  {
     return false;
   }
   return true;
@@ -104,7 +108,8 @@ bool ValetParking::ParkingEmpty()
 bool ValetParking::ParkingFull()
 // return true if all stalls and checkout queue are full
 {
-  if(!(StallFull() && QueueFull())){
+  if(!(StallFull() && QueueFull()))
+  {
     return false;
   }
   return true;
@@ -113,7 +118,8 @@ bool ValetParking::ParkingFull()
 bool ValetParking::QueueEmpty()
 // return true if the checkout queue is empty
 {
-  if(!(_checkout->empty())){
+  if(!(_checkout->empty()))
+  {
     return false;
   }
   return true;
@@ -122,17 +128,20 @@ bool ValetParking::QueueEmpty()
 bool ValetParking::QueueFull()
 // return true if the checkout queue is full
 {
-  if(!(_checkout->size() == _queuecapacity)){
+  if(!(_checkout->size() == _queuecapacity))
+  {
     return false;
-    }
+  }
   return true;
 }
 
 bool ValetParking::StallEmpty()
 // return true if all stalls are empty
 {
-  for(const auto& s : _parkingstall){
-    if(!s.empty()){
+  for(const auto& s : _parkingstall)
+  {
+    if(!s.empty())
+    {
       return false;
     }
   }
@@ -142,8 +151,10 @@ bool ValetParking::StallEmpty()
 bool ValetParking::StallFull()
 // return true if all stalls are full
 {
-  for(const auto& s : _parkingstall){
-    if(s.size() != _stallcapacity){
+  for(const auto& s : _parkingstall)
+  {
+    if(s.size() != _stallcapacity)
+    {
       return false;
     }
   }
@@ -160,8 +171,10 @@ size_t ValetParking::CheckIn()
 // on success return stall# (index-1 base), on failure return 0.
 {
  size_t ticketNo = GetNextTicket();
- for (size_t i = 0; i < _numberofstalls; ++i){
-   if (_parkingstall[i].size() == _stallcapacity){
+ for (size_t i = 0; i < _numberofstalls; ++i)
+ {
+   if (_parkingstall[i].size() == _stallcapacity)
+   {
      continue;
    }
      _parkingstall[i].push(ticketNo);
@@ -173,11 +186,13 @@ size_t ValetParking::CheckIn()
 size_t ValetParking::StallNumber(size_t ticket)
 // return the stall number (index-1 base) in which the ticket number resides
 {
-  for (size_t i = 0; i < _numberofstalls; ++i){
+  for (size_t i = 0; i < _numberofstalls; ++i)
+  {
     auto sn = _parkingstall[i];
     while (!sn.empty()){
         size_t ticketNumber = sn.top();
-        if (ticketNumber == ticket){
+        if (ticketNumber == ticket)
+        {
           return i + 1;
         }
           sn.pop();
@@ -190,10 +205,11 @@ bool ValetParking::CheckOut( size_t stallnumber, size_t ticket)
 // Retrieve the ticket# from the stall and place the ticket in the checkout queue.
 // On success return true.
 {
-  if (!QueueFull()){
-  _parkingstall[stallnumber-1].pop();
+  if (!QueueFull())
+  {
+  _parkingstall[stallnumber - 1].pop();
   _checkout->push(ticket);
-    return true;
+  return true;
   }
   return false;
 }
